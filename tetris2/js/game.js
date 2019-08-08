@@ -250,6 +250,20 @@ var Game = function(){
       resultDiv.innerHTML="You lose.";
     }
   }
+  // add tail lines
+  var addTailLines = function(lines){
+    for (var i=0; i<gameData.length-lines.length; i++){
+      gameData[i]=gameData[i+lines.length];
+    }
+    for (var i=0; i<lines.length; i++){
+      gameData[gameData.length-lines.length+i]=lines[i];
+    }
+    cur.origin.x = cur.origin.x-lines.length;
+    if (cur.origin.x<0){
+      cur.origin.x=0;
+    }
+    refreshDiv(gameData,gameDivs);
+  }
   // initialization
   var init = function(doms, type ,dir){
     gameDiv = doms.gameDiv;
@@ -276,4 +290,5 @@ var Game = function(){
   this.setTime = setTime;
   this.addScore = addScore;
   this.gameover = gameover;
+  this.addTailLines = addTailLines;
 }
