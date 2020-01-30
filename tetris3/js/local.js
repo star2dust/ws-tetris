@@ -2,7 +2,7 @@ var Local = function(socket){
   // game object
   var game;
   // interval
-  var INTERVAL = 2000; // ms
+  var INTERVAL = 300; // ms
   // timer
   var timer = null;
   // time count
