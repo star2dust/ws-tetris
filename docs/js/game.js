@@ -194,6 +194,7 @@ var Game = function(){
         for (var n=0; n<gameData[0].length; n++){
           gameData[0][n] = 0;
         }
+        i = i+1;
       }
     }
     return line;
