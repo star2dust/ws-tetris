@@ -9,7 +9,7 @@ var Local = function(){
   var timeCount = 0;
   // current time
   var time = 0;
-  // bind keyboard event
+  // bind keyboard events
   var bindKeyEvent = function(){
     document.onkeydown = function(e){
       switch (e.keyCode) {
@@ -20,6 +20,24 @@ var Local = function(){
         case 32: game.fall(); break; // space
         default: break;
       }
+    }
+  }
+  // bind button events
+  var bindBtnEvent = function(){
+    document.getElementById('down').onclick = function(){
+      game.down();
+    }
+    document.getElementById('left').onclick = function(){
+      game.left();
+    }
+    document.getElementById('right').onclick = function(){
+      game.right();
+    }
+    document.getElementById('rotate').onclick = function(){
+      game.rotate();
+    }
+    document.getElementById('fall').onclick = function(){
+      game.fall();
     }
   }
   // move
@@ -84,6 +102,7 @@ var Local = function(){
     game = new Game();
     game.init(doms, generateType(), generateDir());
     bindKeyEvent();
+    bindBtnEvent();
     game.performNext(generateType(), generateDir());
     timer = setInterval(move, INTERVAL);
   }
