@@ -54,3 +54,44 @@
   background-color: gray;
   border: 1px solid black;
 }
+
+.rotate-btn {
+	display: inline-block;
+	vertical-align: middle;
+}
+
+.up-triangle {
+	border-width: 0 10px 25px 10px;
+	border-color: transparent transparent #2196F3 transparent;
+	border-style: solid;
+	width: 0;
+	height: 0;
+	margin-left: 25px;
+}
+
+.left-triangle {
+	border-width: 10px 25px 10px 0;
+	border-color: transparent #2196F3 transparent transparent;
+	border-style: solid;
+	width: 0;
+	height: 0;
+}
+
+.right-triangle {
+	border-width: 10px 0 10px 25px;
+	border-color: transparent transparent transparent #2196F3
+	border-style: solid;
+	width: 0;
+	height: 0;
+	margin-left: 45px;
+	margin-top: -20px;
+}
+
+.down-triangle {
+	border-width: 25px 10px 0 10px;
+	border-color: #2196F3 transparent transparent transparent;
+	border-style: solid;
+	width: 0;
+	height: 0;
+	margin-left: 25px;
+}
