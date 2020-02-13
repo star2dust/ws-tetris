@@ -245,10 +245,11 @@ var Game = function(){
   }
   // display game over
   var gameover = function(win){
+	document.getElementById('waiting').innerHTML = '';
     if (win){
-      resultDiv.innerHTML="You win.";
+      resultDiv.innerHTML="You win :)";
     }else {
-      resultDiv.innerHTML="You lose.";
+      resultDiv.innerHTML="You lose :(";
     }
   }
   // add tail lines

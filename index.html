@@ -3,15 +3,13 @@
 <html lang="en" dir="ltr">
   <head>
     <meta charset="utf-8">
-    <title>Tetris</title>
+    <title>Tetris Game Online</title>
     <link rel="stylesheet" href="css/style.css">
   </head>
   <body>
-    <div>Play with direction and space key:
-      up -> rotate, left -> move left,
-      right -> move right, down -> move down,
-      space -> quick down</div>
+    <h1>Tetris Game Online</h1>
     <div id="waiting"></div>
+	<div id="local_gameover"></div>
     <div class="square" id="local">
       <div class="title">User 1</div>
       <div class="game" id="local_game"></div>
@@ -19,7 +17,6 @@
       <div class="info">
         <div>Time : <span id="local_time">0</span>s</div>
         <div>Score: <span id="local_score">0</span>pt</div>
-        <div id="local_gameover"></div>
 		<button id="rotate" style="margin-left:10px;margin-top:10px">rotate</button><br/>
 		<button id="left" style="margin-left:-20px;margin-top:10px">left</button>
 		<button id="fall">fall</button>

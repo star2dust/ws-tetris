@@ -1,4 +1,4 @@
-var socket = io('localhost:3000');
+var socket = io('http://localhost:3000');
 
 var local = new Local(socket);
 var remote = new Remote(socket);

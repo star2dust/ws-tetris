@@ -2,7 +2,7 @@ var Local = function(socket){
   // game object
   var game;
   // interval
-  var test = true;
+  var test = false;
   var INTERVAL = 500; // ms
   var INTERVAL_TEST = 2000;
   // timer
@@ -11,6 +11,40 @@ var Local = function(socket){
   var timeCount = 0;
   // current time
   var time = 0;
+  
+  
+  var browser={
+    versions:function(){ 
+           var u = navigator.userAgent, app = navigator.appVersion; 
+           return {//移动终端浏览器版本信息 
+                trident: u.indexOf('Trident') > -1, //IE内核
+                presto: u.indexOf('Presto') > -1, //opera内核
+                webKit: u.indexOf('AppleWebKit') > -1, //苹果、谷歌内核
+                gecko: u.indexOf('Gecko') > -1 && u.indexOf('KHTML') == -1, //火狐内核
+                mobile: !!u.match(/AppleWebKit.*Mobile.*/), //是否为移动终端
+                ios: !!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/), //ios终端
+                android: u.indexOf('Android') > -1 || u.indexOf('Linux') > -1, //android终端或者uc浏览器
+                iPhone: u.indexOf('iPhone') > -1 , //是否为iPhone或者QQHD浏览器
+                iPad: u.indexOf('iPad') > -1, //是否iPad  
+                webApp: u.indexOf('Safari') == -1, //是否web应该程序，没有头部与底部
+                weixin: u.indexOf('MicroMessenger') > -1, //是否微信 
+                qq: u.match(/\sQQ/i) == " qq" //是否QQ
+            };
+         }(),
+         language:(navigator.browserLanguage || navigator.language).toLowerCase()
+  } 
+  
+  // display instruction
+  var dispIns = function(){
+	  if(browser.versions.mobile || browser.versions.ios || browser.versions.android || 
+  	browser.versions.iPhone || browser.versions.iPad){
+		document.getElementById('waiting').innerHTML = 'Play with buttons: up -> rotate, center -> fall.'
+	}else{
+		document.getElementById('waiting').innerHTML = 'Play with direction and space keys: up -> rotate, space -> fall.'
+	}
+  }
+  
+  
   // bind keyboard event
   var bindKeyEvent = function(){
     document.onkeydown = function(e){
@@ -20,32 +54,92 @@ var Local = function(socket){
         case 40: game.down(); socket.emit('down'); break; // down
         case 37: game.left(); socket.emit('left'); break; // left
         case 32: game.fall(); socket.emit('fall'); break; // space
+		case 65: game.left(); socket.emit('left'); break; // left (A)
+		case 68: game.right(); socket.emit('right'); break; // right (D)
+		case 87: game.rotate(); socket.emit('rotate'); break; // up (W)
+        case 83: game.down(); socket.emit('down'); break; // down (S)
         default: break;
       }
     }
   }
   // bind button events
   var bindBtnEvent = function(){
-    document.getElementById('down').onclick = function(){
-      game.down(); 
-	  socket.emit('down');
-    }
-    document.getElementById('left').onclick = function(){
-      game.left(); 
-	  socket.emit('left');
-    }
-    document.getElementById('right').onclick = function(){
-      game.right(); 
-	  socket.emit('right'); 
-    }
-    document.getElementById('rotate').onclick = function(){
-      game.rotate(); 
-	  socket.emit('rotate'); 
-    }
-    document.getElementById('fall').onclick = function(){
-      game.fall(); 
-	  socket.emit('fall');
-    }
+	//if(browser.versions.mobile || browser.versions.ios || browser.versions.android || 
+  	//browser.versions.iPhone || browser.versions.iPad){  
+		var btn = {
+			down: document.getElementById('down'),
+			left: document.getElementById('left'),
+			right: document.getElementById('right'),
+			rotate: document.getElementById('rotate'),
+			fall: document.getElementById('fall'),
+		}
+		btn.down.onclick = function(){
+			if (!document.onkeydown){
+			  game.down(); 
+			  socket.emit('down');
+			}
+		}
+		btn.left.onclick = function(){
+			if (!document.onkeydown){
+			  game.left(); 
+			  socket.emit('left');
+			}
+		}
+		btn.right.onclick = function(){
+			if (!document.onkeydown){
+			  game.right(); 
+			  socket.emit('right'); 
+			}
+		}
+		btn.rotate.onclick = function(){
+			if (!document.onkeydown){
+			  game.rotate(); 
+			  socket.emit('rotate'); 
+			}
+		}
+		btn.fall.onclick = function(){
+			if (!document.onkeydown){
+			  game.fall(); 
+			  socket.emit('fall');
+			}
+		}
+		btn.left.onmousedown = function(e){
+			tid = setInterval(function(){
+				game.left(); 
+				socket.emit('left');
+			},INTERVAL/10);
+		};
+		btn.left.onmouseup = function(e){
+			clearInterval(tid);
+		}
+		btn.left.onmouseout = function(e){
+			clearInterval(tid);
+		}
+		btn.right.onmousedown = function(e){
+			tid = setInterval(function(){
+				game.right();
+				socket.emit('right');				
+			},INTERVAL/10);
+		};
+		btn.right.onmouseup = function(e){
+			clearInterval(tid);
+		}
+		btn.right.onmouseout = function(e){
+			clearInterval(tid);
+		}
+		btn.rotate.onmousedown = function(e){
+			tid = setInterval(function(){
+				game.rotate(); 
+				socket.emit('rotate'); 
+			},INTERVAL/5);
+		};
+		btn.rotate.onmouseup = function(e){
+			clearInterval(tid);
+		}
+		btn.rotate.onmouseout = function(e){
+			clearInterval(tid);
+		}
+	//}
   }
   // move
   var move = function(){
@@ -65,7 +159,7 @@ var Local = function(socket){
       var gameOver = game.checkGameOver();
       if (gameOver){
         game.gameover(false);
-        document.getElementById('remote_gameover').innerHTML = 'You win.';
+        document.getElementById('remote_gameover').innerHTML = 'You win :)';
         socket.emit('lose');
         stop();
       }else {
@@ -143,8 +237,8 @@ var Local = function(socket){
     document.onkeydown = null;
   }
   socket.on('start',function(){
-    document.getElementById('waiting').innerHTML = '';
     start();
+	dispIns();
   });
 
   socket.on('lose',function(){
@@ -154,12 +248,13 @@ var Local = function(socket){
 
   socket.on('leave',function(){
     document.getElementById('local_gameover').innerHTML = 'Disconnect.';
+	document.getElementById('waiting').innerHTML = '';
     document.getElementById('remote_gameover').innerHTML = 'Disconnect.';
     stop();
   });
 
   socket.on('bottomLine',function(data){
     game.addTailLines(data);
-    sockte.emit('addTailLines',data);
+    socket.emit('addTailLines',data);
   })
 }
