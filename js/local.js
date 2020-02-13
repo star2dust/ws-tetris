@@ -2,7 +2,9 @@ var Local = function(socket){
   // game object
   var game;
   // interval
+  var test = true;
   var INTERVAL = 500; // ms
+  var INTERVAL_TEST = 2000;
   // timer
   var timer = null;
   // time count
@@ -91,7 +93,11 @@ var Local = function(socket){
   // time function
   var timeFunc = function(){
     timeCount = timeCount + 1;
-    if (timeCount == 1000/INTERVAL){
+	var CountNum = 5; 
+	if (!test){
+		CountNum = 1000/INTERVAL;
+	}	
+    if (timeCount == CountNum){
       timeCount = 0;
       time = time + 1;
       game.setTime(time);
