@@ -5,6 +5,8 @@ These are the codes for an online 2-player tetris game using websocket. But it r
 - Just click: https://star2dust.github.io/ws-tetris/
 - The source files are in the folder `./tetris2`
 
+<img src="tetris_display.PNG" alt="single" width="450"/>
+
 ## To run an online 2-player game
 - Follow the instruction [here](https://github.com/star2dust/ws-tetris/tree/master/tetris3)
 - The source files are in the folder `./tetris3`
